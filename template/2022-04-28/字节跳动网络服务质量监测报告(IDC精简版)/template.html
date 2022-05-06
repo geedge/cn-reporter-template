@@ -1447,17 +1447,17 @@
   /** 内置js end */
 
 
-  // 计算出前三个周期的时间戳范围
-  var timeOffset = timeRange[1] - timeRange[0]
-  var wholeTimeOffset = [60 * 60 - 1, 60 * 60 * 24 - 1, 60 * 60 * 24 * 7 - 1]
-  if (wholeTimeOffset.indexOf(timeOffset) > -1) {
-    timeOffset++
-  }
-  var prevTimeRange = [timeRange[0] - timeOffset, timeRange[1] - timeOffset]
-  var pprevTimeRange = [prevTimeRange[0] - timeOffset, prevTimeRange[1] - timeOffset]
-  var ppprevTimeRange = [pprevTimeRange[0] - timeOffset, pprevTimeRange[1] - timeOffset]
-  // 填充时间
+  // 计算出前三个周期的时间戳范围，填充时间
   function initTimeRange () {
+    var timeOffset = timeRange[1] - timeRange[0]
+    var wholeTimeOffset = [60 * 60 - 1, 60 * 60 * 24 - 1, 60 * 60 * 24 * 7 - 1]
+    if (wholeTimeOffset.indexOf(timeOffset) > -1) {
+      timeOffset++
+    }
+    var prevTimeRange = [timeRange[0] - timeOffset, timeRange[1] - timeOffset]
+    var pprevTimeRange = [prevTimeRange[0] - timeOffset, prevTimeRange[1] - timeOffset]
+    var ppprevTimeRange = [pprevTimeRange[0] - timeOffset, pprevTimeRange[1] - timeOffset]
+
     var currentRange0 = document.getElementById('currentRange0')
     var currentRangeStr = ''
     var prevRangeStr = ''
@@ -1471,9 +1471,10 @@
     currentRange0.innerText = currentRangeStr
   }
 
-  var seriesData1 = trafficData.map(d => [d.stat_time, d.rate])
-  var unit1 = 'Kbps'
   function initEcharts1 () {
+    var seriesData1 = trafficData.map(d => [d.stat_time, d.rate])
+    var unit1 = 'Kbps'
+
     var myChart = echarts.init(document.getElementById('canvas1'))
     var option = {
       color: chartColor,
@@ -1578,33 +1579,34 @@
   }
 
   //  域外访问域内服务的Top 10省份流量分布折线图
-  var unit2 = 'KB'
-  var categoryData2 = top10ProvinceOutToInTraffic.map(t => t.client_province)
-  var barSeriesDataUp2 = top10ProvinceOutToInTraffic.map(t => ({ value: t.egress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / outToInTotalTraffic }))
-  var lineSeriesDataUp2 = top10ProvinceOutToInTraffic.map(t => {
-    var findData = prevTop10ProvinceOutToInTraffic.find(pt => pt.client_province === t.client_province)
-    if (findData) {
-      return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData2 = [...lineSeriesDataUp2]
-  var copyBarSeriesData2 = [...barSeriesDataUp2]
-  copyLineSeriesData2.sort((a, b) => a - b)
-  copyBarSeriesData2.sort((a, b) => a.value - b.value)
-  var barMax2 = copyBarSeriesData2.length > 0 ? copyBarSeriesData2[copyBarSeriesData2.length - 1].value : 50
-  var lineMin2 = copyLineSeriesData2[0] ? copyLineSeriesData2[0] : 0
-  var lineMax2 = copyLineSeriesData2.length > 0 ? copyLineSeriesData2[copyLineSeriesData2.length - 1] : 0
-  if (lineMin2 == 0 && lineMin2 == lineMax2) {
-    lineMin2 = -5
-    lineMax2 = 1
-  } else {
-    var tempLineMin2 = lineMin2
-    lineMin2 = lineMin2 - 2.5 * (lineMax2 - lineMin2)
-    lineMax2 = lineMax2 + 0.5 * (lineMax2 - tempLineMin2)
-  }
   function initEcharts2 () {
+    var unit2 = 'KB'
+    var categoryData2 = top10ProvinceOutToInTraffic.map(t => t.client_province)
+    var barSeriesDataUp2 = top10ProvinceOutToInTraffic.map(t => ({ value: t.egress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / outToInTotalTraffic }))
+    var lineSeriesDataUp2 = top10ProvinceOutToInTraffic.map(t => {
+      var findData = prevTop10ProvinceOutToInTraffic.find(pt => pt.client_province === t.client_province)
+      if (findData) {
+        return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData2 = [...lineSeriesDataUp2]
+    var copyBarSeriesData2 = [...barSeriesDataUp2]
+    copyLineSeriesData2.sort((a, b) => a - b)
+    copyBarSeriesData2.sort((a, b) => a.value - b.value)
+    var barMax2 = copyBarSeriesData2.length > 0 ? copyBarSeriesData2[copyBarSeriesData2.length - 1].value : 50
+    var lineMin2 = copyLineSeriesData2[0] ? copyLineSeriesData2[0] : 0
+    var lineMax2 = copyLineSeriesData2.length > 0 ? copyLineSeriesData2[copyLineSeriesData2.length - 1] : 0
+    if (lineMin2 == 0 && lineMin2 == lineMax2) {
+      lineMin2 = -5
+      lineMax2 = 1
+    } else {
+      var tempLineMin2 = lineMin2
+      lineMin2 = lineMin2 - 2.5 * (lineMax2 - lineMin2)
+      lineMax2 = lineMax2 + 0.5 * (lineMax2 - tempLineMin2)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas2'))
     var option = {
       animation: false,
@@ -1700,33 +1702,34 @@
   }
 
   //  域外访问域内服务的Top 10省份流量分布折线图
-  var unit8 = 'KB'
-  var categoryData8 = top10ProvinceOutToInTraffic.map(t => t.client_province)
-  var barSeriesDataDown8 = top10ProvinceOutToInTraffic.map(t => ({ value: t.ingress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / outToInTotalTraffic }))
-  var lineSeriesDataDown8 = top10ProvinceOutToInTraffic.map(t => {
-    var findData = prevTop10ProvinceOutToInTraffic.find(pt => pt.client_province === t.client_province)
-    if (findData) {
-      return findData.ingress_bytes === 0 ? 0.00 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData8 = [...lineSeriesDataDown8]
-  var copyBarSeriesData8 = [...barSeriesDataDown8]
-  copyLineSeriesData8.sort((a, b) => a - b)
-  copyBarSeriesData8.sort((a, b) => a.value - b.value)
-  var barMax8 = copyBarSeriesData8.length > 0 ? copyBarSeriesData8[copyBarSeriesData8.length - 1].value : 50
-  var lineMin8 = copyLineSeriesData8[0] ? copyLineSeriesData8[0] : 0
-  var lineMax8 = copyLineSeriesData8.length > 0 ? copyLineSeriesData8[copyLineSeriesData8.length - 1] : 0
-  if (lineMin8 == 0 && lineMin8 == lineMax8) {
-    lineMin8 = -5
-    lineMax8 = 1
-  } else {
-    var tempLineMin8 = lineMin8
-    lineMin8 = lineMin8 - 2.5 * (lineMax8 - lineMin8)
-    lineMax8 = lineMax8 + 0.5 * (lineMax8 - tempLineMin8)
-  }
   function initEcharts8 () {
+    var unit8 = 'KB'
+    var categoryData8 = top10ProvinceOutToInTraffic.map(t => t.client_province)
+    var barSeriesDataDown8 = top10ProvinceOutToInTraffic.map(t => ({ value: t.ingress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / outToInTotalTraffic }))
+    var lineSeriesDataDown8 = top10ProvinceOutToInTraffic.map(t => {
+      var findData = prevTop10ProvinceOutToInTraffic.find(pt => pt.client_province === t.client_province)
+      if (findData) {
+        return findData.ingress_bytes === 0 ? 0.00 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData8 = [...lineSeriesDataDown8]
+    var copyBarSeriesData8 = [...barSeriesDataDown8]
+    copyLineSeriesData8.sort((a, b) => a - b)
+    copyBarSeriesData8.sort((a, b) => a.value - b.value)
+    var barMax8 = copyBarSeriesData8.length > 0 ? copyBarSeriesData8[copyBarSeriesData8.length - 1].value : 50
+    var lineMin8 = copyLineSeriesData8[0] ? copyLineSeriesData8[0] : 0
+    var lineMax8 = copyLineSeriesData8.length > 0 ? copyLineSeriesData8[copyLineSeriesData8.length - 1] : 0
+    if (lineMin8 == 0 && lineMin8 == lineMax8) {
+      lineMin8 = -5
+      lineMax8 = 1
+    } else {
+      var tempLineMin8 = lineMin8
+      lineMin8 = lineMin8 - 2.5 * (lineMax8 - lineMin8)
+      lineMax8 = lineMax8 + 0.5 * (lineMax8 - tempLineMin8)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas8'))
     var option = {
       animation: false,
@@ -1822,33 +1825,34 @@
   }
 
   //  域内访问域外服务的Top 10省份流量分布折线图
-  var unit3 = 'KB'
-  var categoryData3 = top10ProvinceInToOutTraffic.map(t => t.server_province)
-  var barSeriesDataUp3 = top10ProvinceInToOutTraffic.map(t => ({ value: t.egress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / inToOutTotalTraffic }))
-  var lineSeriesDataUp3 = top10ProvinceInToOutTraffic.map(t => {
-    var findData = prevTop10ProvinceInToOutTraffic.find(pt => pt.server_province === t.server_province)
-    if (findData) {
-      return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData3 = [...lineSeriesDataUp3]
-  var copyBarSeriesData3 = [...barSeriesDataUp3]
-  copyLineSeriesData3.sort((a, b) => a - b)
-  copyBarSeriesData3.sort((a, b) => a.value - b.value)
-  var barMax3 = copyBarSeriesData3.length > 0 ? copyBarSeriesData3[copyBarSeriesData3.length - 1].value : 50
-  var lineMin3 = copyLineSeriesData3[0] ? copyLineSeriesData3[0] : 0
-  var lineMax3 = copyLineSeriesData3.length > 0 ? copyLineSeriesData3[copyLineSeriesData3.length - 1] : 0
-  if (lineMin3 == 0 && lineMin3 == lineMax3) {
-    lineMin3 = -5
-    lineMax3 = 1
-  } else {
-    var tempLineMin3 = lineMin3
-    lineMin3 = lineMin3 - 2.5 * (lineMax3 - lineMin3)
-    lineMax3 = lineMax3 + 0.5 * (lineMax3 - tempLineMin3)
-  }
   function initEcharts3 () {
+    var unit3 = 'KB'
+    var categoryData3 = top10ProvinceInToOutTraffic.map(t => t.server_province)
+    var barSeriesDataUp3 = top10ProvinceInToOutTraffic.map(t => ({ value: t.egress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / inToOutTotalTraffic }))
+    var lineSeriesDataUp3 = top10ProvinceInToOutTraffic.map(t => {
+      var findData = prevTop10ProvinceInToOutTraffic.find(pt => pt.server_province === t.server_province)
+      if (findData) {
+        return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData3 = [...lineSeriesDataUp3]
+    var copyBarSeriesData3 = [...barSeriesDataUp3]
+    copyLineSeriesData3.sort((a, b) => a - b)
+    copyBarSeriesData3.sort((a, b) => a.value - b.value)
+    var barMax3 = copyBarSeriesData3.length > 0 ? copyBarSeriesData3[copyBarSeriesData3.length - 1].value : 50
+    var lineMin3 = copyLineSeriesData3[0] ? copyLineSeriesData3[0] : 0
+    var lineMax3 = copyLineSeriesData3.length > 0 ? copyLineSeriesData3[copyLineSeriesData3.length - 1] : 0
+    if (lineMin3 == 0 && lineMin3 == lineMax3) {
+      lineMin3 = -5
+      lineMax3 = 1
+    } else {
+      var tempLineMin3 = lineMin3
+      lineMin3 = lineMin3 - 2.5 * (lineMax3 - lineMin3)
+      lineMax3 = lineMax3 + 0.5 * (lineMax3 - tempLineMin3)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas3'))
     var option = {
       animation: false,
@@ -1944,33 +1948,34 @@
   }
 
   //  域内访问域外服务的Top 10省份流量分布折线图
-  var unit9 = 'KB'
-  var categoryData9 = top10ProvinceInToOutTraffic.map(t => t.server_province)
-  var barSeriesDataDown9 = top10ProvinceInToOutTraffic.map(t => ({ value: t.ingress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / inToOutTotalTraffic }))
-  var lineSeriesDataDown9 = top10ProvinceInToOutTraffic.map(t => {
-    var findData = prevTop10ProvinceInToOutTraffic.find(pt => pt.server_province === t.server_province)
-    if (findData) {
-      return findData.ingress_bytes === 0 ? 0.00 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData9 = [...lineSeriesDataDown9]
-  var copyBarSeriesData9 = [...barSeriesDataDown9]
-  copyLineSeriesData9.sort((a, b) => a - b)
-  copyBarSeriesData9.sort((a, b) => a.value - b.value)
-  var barMax9 = copyBarSeriesData9.length > 0 ? copyBarSeriesData9[copyBarSeriesData9.length - 1].value : 50
-  var lineMin9 = copyLineSeriesData9[0] ? copyLineSeriesData9[0] : 0
-  var lineMax9 = copyLineSeriesData9.length > 0 ? copyLineSeriesData9[copyLineSeriesData9.length - 1] : 0
-  if (lineMin9 == 0 && lineMin9 == lineMax9) {
-    lineMin9 = -5
-    lineMax9 = 1
-  } else {
-    var tempLineMin9 = lineMin9
-    lineMin9 = lineMin9 - 2.5 * (lineMax9 - lineMin9)
-    lineMax9 = lineMax9 + 0.5 * (lineMax9 - tempLineMin9)
-  }
   function initEcharts9 () {
+    var unit9 = 'KB'
+    var categoryData9 = top10ProvinceInToOutTraffic.map(t => t.server_province)
+    var barSeriesDataDown9 = top10ProvinceInToOutTraffic.map(t => ({ value: t.ingress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / inToOutTotalTraffic }))
+    var lineSeriesDataDown9 = top10ProvinceInToOutTraffic.map(t => {
+      var findData = prevTop10ProvinceInToOutTraffic.find(pt => pt.server_province === t.server_province)
+      if (findData) {
+        return findData.ingress_bytes === 0 ? 0.00 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData9 = [...lineSeriesDataDown9]
+    var copyBarSeriesData9 = [...barSeriesDataDown9]
+    copyLineSeriesData9.sort((a, b) => a - b)
+    copyBarSeriesData9.sort((a, b) => a.value - b.value)
+    var barMax9 = copyBarSeriesData9.length > 0 ? copyBarSeriesData9[copyBarSeriesData9.length - 1].value : 50
+    var lineMin9 = copyLineSeriesData9[0] ? copyLineSeriesData9[0] : 0
+    var lineMax9 = copyLineSeriesData9.length > 0 ? copyLineSeriesData9[copyLineSeriesData9.length - 1] : 0
+    if (lineMin9 == 0 && lineMin9 == lineMax9) {
+      lineMin9 = -5
+      lineMax9 = 1
+    } else {
+      var tempLineMin9 = lineMin9
+      lineMin9 = lineMin9 - 2.5 * (lineMax9 - lineMin9)
+      lineMax9 = lineMax9 + 0.5 * (lineMax9 - tempLineMin9)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas9'))
     var option = {
       animation: false,
@@ -2066,33 +2071,34 @@
   }
 
   // 域外访问域内服务的Top 10省内地区流量分布折线图
-  var unit4 = 'KB'
-  var categoryData4 = top10CityOutToInTraffic.map(t => t.client_region)
-  var barSeriesDataUp4 = top10CityOutToInTraffic.map(t => ({ value: t.egress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / outToInTotalTraffic }))
-  var lineSeriesDataUp4 = top10CityOutToInTraffic.map(t => {
-    var findData = prevTop10CityOutToInTraffic.find(pt => pt.client_region === t.client_region)
-    if (findData) {
-      return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData4 = [...lineSeriesDataUp4]
-  var copyBarSeriesData4 = [...barSeriesDataUp4]
-  copyLineSeriesData4.sort((a, b) => a - b)
-  copyBarSeriesData4.sort((a, b) => a.value - b.value)
-  var barMax4 = copyBarSeriesData4.length > 0 ? copyBarSeriesData4[copyBarSeriesData4.length - 1].value : 50
-  var lineMin4 = copyLineSeriesData4[0] ? copyLineSeriesData4[0] : 0
-  var lineMax4 = copyLineSeriesData4.length > 0 ? copyLineSeriesData4[copyLineSeriesData4.length - 1] : 0
-  if (lineMin4 == 0 && lineMin4 == lineMax4) {
-    lineMin4 = -5
-    lineMax4 = 1
-  } else {
-    var tempLineMin4 = lineMin4
-    lineMin4 = lineMin4 - 2.5 * (lineMax4 - lineMin4)
-    lineMax4 = lineMax4 + 0.5 * (lineMax4 - tempLineMin4)
-  }
   function initEcharts4 () {
+    var unit4 = 'KB'
+    var categoryData4 = top10CityOutToInTraffic.map(t => t.client_region)
+    var barSeriesDataUp4 = top10CityOutToInTraffic.map(t => ({ value: t.egress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / outToInTotalTraffic }))
+    var lineSeriesDataUp4 = top10CityOutToInTraffic.map(t => {
+      var findData = prevTop10CityOutToInTraffic.find(pt => pt.client_region === t.client_region)
+      if (findData) {
+        return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData4 = [...lineSeriesDataUp4]
+    var copyBarSeriesData4 = [...barSeriesDataUp4]
+    copyLineSeriesData4.sort((a, b) => a - b)
+    copyBarSeriesData4.sort((a, b) => a.value - b.value)
+    var barMax4 = copyBarSeriesData4.length > 0 ? copyBarSeriesData4[copyBarSeriesData4.length - 1].value : 50
+    var lineMin4 = copyLineSeriesData4[0] ? copyLineSeriesData4[0] : 0
+    var lineMax4 = copyLineSeriesData4.length > 0 ? copyLineSeriesData4[copyLineSeriesData4.length - 1] : 0
+    if (lineMin4 == 0 && lineMin4 == lineMax4) {
+      lineMin4 = -5
+      lineMax4 = 1
+    } else {
+      var tempLineMin4 = lineMin4
+      lineMin4 = lineMin4 - 2.5 * (lineMax4 - lineMin4)
+      lineMax4 = lineMax4 + 0.5 * (lineMax4 - tempLineMin4)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas4'))
     var option = {
       animation: false,
@@ -2187,33 +2193,34 @@
   }
 
   // 域外访问域内服务的Top 10省内地区流量分布折线图
-  var unit10 = 'KB'
-  var categoryData10 = top10CityOutToInTraffic.map(t => t.client_region)
-  var barSeriesDataDown10 = top10CityOutToInTraffic.map(t => ({ value: t.ingress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / outToInTotalTraffic }))
-  var lineSeriesDataDown10 = top10CityOutToInTraffic.map(t => {
-    var findData = prevTop10CityOutToInTraffic.find(pt => pt.client_region === t.client_region)
-    if (findData) {
-      return findData.ingress_bytes === 0 ? 0 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData10 = [...lineSeriesDataDown10]
-  var copyBarSeriesData10 = [...barSeriesDataDown10]
-  copyLineSeriesData10.sort((a, b) => a - b)
-  copyBarSeriesData10.sort((a, b) => a.value - b.value)
-  var barMax10 = copyBarSeriesData10.length > 0 ? copyBarSeriesData10[copyBarSeriesData10.length - 1].value : 50
-  var lineMin10 = copyLineSeriesData10[0] ? copyLineSeriesData10[0] : 0
-  var lineMax10 = copyLineSeriesData10.length > 0 ? copyLineSeriesData10[copyLineSeriesData10.length - 1] : 0
-  if (lineMin10 == 0 && lineMin10 == lineMax10) {
-    lineMin10 = -5
-    lineMax10 = 1
-  } else {
-    var tempLineMin10 = lineMin10
-    lineMin10 = lineMin10 - 2.5 * (lineMax10 - lineMin10)
-    lineMax10 = lineMax10 + 0.5 * (lineMax10 - tempLineMin10)
-  }
   function initEcharts10 () {
+    var unit10 = 'KB'
+    var categoryData10 = top10CityOutToInTraffic.map(t => t.client_region)
+    var barSeriesDataDown10 = top10CityOutToInTraffic.map(t => ({ value: t.ingress_bytes, percent: outToInTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / outToInTotalTraffic }))
+    var lineSeriesDataDown10 = top10CityOutToInTraffic.map(t => {
+      var findData = prevTop10CityOutToInTraffic.find(pt => pt.client_region === t.client_region)
+      if (findData) {
+        return findData.ingress_bytes === 0 ? 0 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData10 = [...lineSeriesDataDown10]
+    var copyBarSeriesData10 = [...barSeriesDataDown10]
+    copyLineSeriesData10.sort((a, b) => a - b)
+    copyBarSeriesData10.sort((a, b) => a.value - b.value)
+    var barMax10 = copyBarSeriesData10.length > 0 ? copyBarSeriesData10[copyBarSeriesData10.length - 1].value : 50
+    var lineMin10 = copyLineSeriesData10[0] ? copyLineSeriesData10[0] : 0
+    var lineMax10 = copyLineSeriesData10.length > 0 ? copyLineSeriesData10[copyLineSeriesData10.length - 1] : 0
+    if (lineMin10 == 0 && lineMin10 == lineMax10) {
+      lineMin10 = -5
+      lineMax10 = 1
+    } else {
+      var tempLineMin10 = lineMin10
+      lineMin10 = lineMin10 - 2.5 * (lineMax10 - lineMin10)
+      lineMax10 = lineMax10 + 0.5 * (lineMax10 - tempLineMin10)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas10'))
     var option = {
       animation: false,
@@ -2308,33 +2315,34 @@
   }
 
   // 域内访问域外服务的TOP 10省内地区流量分布折线图
-  var unit5 = 'KB'
-  var categoryData5 = top10CityInToOutTraffic.map(t => t.server_region)
-  var barSeriesDataUp5 = top10CityInToOutTraffic.map(t => ({ value: t.egress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / inToOutTotalTraffic }))
-  var lineSeriesDataUp5 = top10CityInToOutTraffic.map(t => {
-    var findData = prevTop10CityInToOutTraffic.find(pt => pt.client_region === t.client_region)
-    if (findData) {
-      return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData5 = [...lineSeriesDataUp5]
-  var copyBarSeriesData5 = [...barSeriesDataUp5]
-  copyLineSeriesData5.sort((a, b) => a - b)
-  copyBarSeriesData5.sort((a, b) => a.value - b.value)
-  var barMax5 = copyBarSeriesData5.length > 0 ? copyBarSeriesData5[copyBarSeriesData5.length - 1].value : 50
-  var lineMin5 = copyLineSeriesData5[0] ? copyLineSeriesData5[0] : 0
-  var lineMax5 = copyLineSeriesData5.length > 0 ? copyLineSeriesData5[copyLineSeriesData5.length - 1] : 0
-  if (lineMin5 == 0 && lineMin5 == lineMax5) {
-    lineMin5 = -5
-    lineMax5 = 1
-  } else {
-    var tempLineMin5 = lineMin5
-    lineMin5 = lineMin5 - 2.5 * (lineMax5 - lineMin5)
-    lineMax5 = lineMax5 + 0.5 * (lineMax5 - tempLineMin5)
-  }
   function initEcharts5 () {
+    var unit5 = 'KB'
+    var categoryData5 = top10CityInToOutTraffic.map(t => t.server_region)
+    var barSeriesDataUp5 = top10CityInToOutTraffic.map(t => ({ value: t.egress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.egress_bytes) / inToOutTotalTraffic }))
+    var lineSeriesDataUp5 = top10CityInToOutTraffic.map(t => {
+      var findData = prevTop10CityInToOutTraffic.find(pt => pt.client_region === t.client_region)
+      if (findData) {
+        return findData.egress_bytes === 0 ? 0 : parseFloat(((t.egress_bytes - findData.egress_bytes) / parseFloat(findData.egress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData5 = [...lineSeriesDataUp5]
+    var copyBarSeriesData5 = [...barSeriesDataUp5]
+    copyLineSeriesData5.sort((a, b) => a - b)
+    copyBarSeriesData5.sort((a, b) => a.value - b.value)
+    var barMax5 = copyBarSeriesData5.length > 0 ? copyBarSeriesData5[copyBarSeriesData5.length - 1].value : 50
+    var lineMin5 = copyLineSeriesData5[0] ? copyLineSeriesData5[0] : 0
+    var lineMax5 = copyLineSeriesData5.length > 0 ? copyLineSeriesData5[copyLineSeriesData5.length - 1] : 0
+    if (lineMin5 == 0 && lineMin5 == lineMax5) {
+      lineMin5 = -5
+      lineMax5 = 1
+    } else {
+      var tempLineMin5 = lineMin5
+      lineMin5 = lineMin5 - 2.5 * (lineMax5 - lineMin5)
+      lineMax5 = lineMax5 + 0.5 * (lineMax5 - tempLineMin5)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas5'))
     var option = {
       animation: false,
@@ -2429,33 +2437,34 @@
   }
 
   // 域内访问域外服务的TOP 10省内地区流量分布折线图
-  var unit11 = 'KB'
-  var categoryData11 = top10CityInToOutTraffic.map(t => t.server_region)
-  var barSeriesDataDown11 = top10CityInToOutTraffic.map(t => ({ value: t.ingress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / inToOutTotalTraffic }))
-  var lineSeriesDataDown11 = top10CityInToOutTraffic.map(t => {
-    var findData = prevTop10CityInToOutTraffic.find(pt => pt.client_region === t.client_region)
-    if (findData) {
-      return findData.ingress_bytes === 0 ? 0 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
-    } else {
-      return 0
-    }
-  })
-  var copyLineSeriesData11 = [...lineSeriesDataDown11]
-  var copyBarSeriesData11 = [...barSeriesDataDown11]
-  copyLineSeriesData11.sort((a, b) => a - b)
-  copyBarSeriesData11.sort((a, b) => a.value - b.value)
-  var barMax11 = copyBarSeriesData11.length > 0 ? copyBarSeriesData11[copyBarSeriesData11.length - 1].value : 50
-  var lineMin11 = copyLineSeriesData11[0] ? copyLineSeriesData11[0] : 0
-  var lineMax11 = copyLineSeriesData11.length > 0 ? copyLineSeriesData11[copyLineSeriesData11.length - 1] : 0
-  if (lineMin11 == 0 && lineMin11 == lineMax11) {
-    lineMin11 = -5
-    lineMax11 = 1
-  } else {
-    var tempLineMin11 = lineMin11
-    lineMin11 = lineMin11 - 2.5 * (lineMax11 - lineMin11)
-    lineMax11 = lineMax11 + 0.5 * (lineMax11 - tempLineMin11)
-  }
   function initEcharts11 () {
+    var unit11 = 'KB'
+    var categoryData11 = top10CityInToOutTraffic.map(t => t.server_region)
+    var barSeriesDataDown11 = top10CityInToOutTraffic.map(t => ({ value: t.ingress_bytes, percent: inToOutTotalTraffic === 0 ? 0 : parseFloat(t.ingress_bytes) / inToOutTotalTraffic }))
+    var lineSeriesDataDown11 = top10CityInToOutTraffic.map(t => {
+      var findData = prevTop10CityInToOutTraffic.find(pt => pt.client_region === t.client_region)
+      if (findData) {
+        return findData.ingress_bytes === 0 ? 0 : parseFloat(((t.ingress_bytes - findData.ingress_bytes) / parseFloat(findData.ingress_bytes) * 100).toFixed(2))
+      } else {
+        return 0
+      }
+    })
+    var copyLineSeriesData11 = [...lineSeriesDataDown11]
+    var copyBarSeriesData11 = [...barSeriesDataDown11]
+    copyLineSeriesData11.sort((a, b) => a - b)
+    copyBarSeriesData11.sort((a, b) => a.value - b.value)
+    var barMax11 = copyBarSeriesData11.length > 0 ? copyBarSeriesData11[copyBarSeriesData11.length - 1].value : 50
+    var lineMin11 = copyLineSeriesData11[0] ? copyLineSeriesData11[0] : 0
+    var lineMax11 = copyLineSeriesData11.length > 0 ? copyLineSeriesData11[copyLineSeriesData11.length - 1] : 0
+    if (lineMin11 == 0 && lineMin11 == lineMax11) {
+      lineMin11 = -5
+      lineMax11 = 1
+    } else {
+      var tempLineMin11 = lineMin11
+      lineMin11 = lineMin11 - 2.5 * (lineMax11 - lineMin11)
+      lineMax11 = lineMax11 + 0.5 * (lineMax11 - tempLineMin11)
+    }
+
     var myChart = echarts.init(document.getElementById('canvas11'))
     var option = {
       animation: false,
@@ -2549,19 +2558,6 @@
     document.getElementById('imgCanvas11').src = myChart.getDataURL({pixelRatio: 1})
   }
 
-  var total6 = top3S2cTotalTraffic[0]
-  var seriesData6 = []
-  var startAngle6 = 90
-  if (total6) {
-    var missedCache6 = missedCacheS2cTraffic.find(t => total6.server_idc_renter ===  t.client_idc_renter)
-    if (missedCache6) {
-      seriesData6.push({ name: '缓存未命中流量', value: missedCache6.received_bytes })
-      seriesData6.push({ name: '缓存命中流量', value: total6.received_bytes - missedCache6.received_bytes })
-      var halfAngle6 = (seriesData6[0].value / total6.received_bytes) * 360 / 2
-      startAngle6 = startAngle6 + halfAngle6 - 5
-    }
-  }
-
   var pieOption = {
     legend: {
       show: false
@@ -2593,6 +2589,19 @@
     ]
   }
   function initEcharts6 () {
+    var total6 = top3S2cTotalTraffic[0]
+    var seriesData6 = []
+    var startAngle6 = 90
+    if (total6) {
+      var missedCache6 = missedCacheS2cTraffic.find(t => total6.server_idc_renter ===  t.client_idc_renter)
+      if (missedCache6) {
+        seriesData6.push({ name: '缓存未命中流量', value: missedCache6.received_bytes })
+        seriesData6.push({ name: '缓存命中流量', value: total6.received_bytes - missedCache6.received_bytes })
+        var halfAngle6 = (seriesData6[0].value / total6.received_bytes) * 360 / 2
+        startAngle6 = startAngle6 + halfAngle6 - 5
+      }
+    }
+
     var myChart = echarts.init(document.getElementById('canvas6'))
     var option = JSON.parse(JSON.stringify(pieOption))
     option.series[0].data = seriesData6
@@ -2602,19 +2611,20 @@
     document.getElementById('imgCanvas6').src = myChart.getDataURL({pixelRatio: 1})
   }
 
-  var total7 = top3Sessions[0]
-  var seriesData7 = []
-  var startAngle7 = 90
-  if (total7) {
-    var missedCache7 = missedCacheSession.find(t => total7.server_idc_renter ===  t.client_idc_renter)
-    if (missedCache7) {
-      seriesData7.push({ name: '缓存未命中会话', value: missedCache7.sessions })
-      seriesData7.push({ name: '缓存命中会话', value: total7.sessions - missedCache7.sessions })
-      var halfAngle7 = (seriesData7[0].value / total7.sessions) * 360 / 2
-      startAngle7 = startAngle7 + halfAngle7 - 5
-    }
-  }
   function initEcharts7 () {
+    var total7 = top3Sessions[0]
+    var seriesData7 = []
+    var startAngle7 = 90
+    if (total7) {
+      var missedCache7 = missedCacheSession.find(t => total7.server_idc_renter ===  t.client_idc_renter)
+      if (missedCache7) {
+        seriesData7.push({ name: '缓存未命中会话', value: missedCache7.sessions })
+        seriesData7.push({ name: '缓存命中会话', value: total7.sessions - missedCache7.sessions })
+        var halfAngle7 = (seriesData7[0].value / total7.sessions) * 360 / 2
+        startAngle7 = startAngle7 + halfAngle7 - 5
+      }
+    }
+
     var myChart = echarts.init(document.getElementById('canvas7'))
     var option = JSON.parse(JSON.stringify(pieOption))
     option.series[0].data = seriesData7
@@ -2624,18 +2634,18 @@
     document.getElementById('imgCanvas7').src = myChart.getDataURL({pixelRatio: 1})
   }
 
-  initEcharts1()
-  initEcharts2()
-  initEcharts3()
-  initEcharts4()
-  initEcharts5()
-  initEcharts6()
-  initEcharts7()
-  initEcharts8()
-  initEcharts9()
-  initEcharts10()
-  initEcharts11()
-  initTimeRange()
+  try { initEcharts1() } catch (e) { console.error(e) }
+  try { initEcharts2() } catch (e) { console.error(e) }
+  try { initEcharts3() } catch (e) { console.error(e) }
+  try { initEcharts4() } catch (e) { console.error(e) }
+  try { initEcharts5() } catch (e) { console.error(e) }
+  try { initEcharts6() } catch (e) { console.error(e) }
+  try { initEcharts7() } catch (e) { console.error(e) }
+  try { initEcharts8() } catch (e) { console.error(e) }
+  try { initEcharts9() } catch (e) { console.error(e) }
+  try { initEcharts10() } catch (e) { console.error(e) }
+  try { initEcharts11() } catch (e) { console.error(e) }
+  try { initTimeRange() } catch (e) { console.error(e) }
 </script>
 
 
