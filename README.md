@@ -1,92 +1,39 @@
-# Cn reporter template
+# CN报告模板
 
-CN报告模板
+对报告的模板、测试用例进行版本控制。目录结构为：  
+yyyy-MM-dd  
+— [报告名称]  
+— — test    
+— — — html  
+— — — — test1.js  
+— — — — test2.js  
+— — — — testTemplate.html(使用testN.js测试数据的测试文件)  
+— — — freemarker  
+— — — — config.json  
+— — — — test1.json  
+— — — — test2.json  
+— — template.html(带有假数据的，可以查看完整效果的文件)  
+— — template.ftl  
 
-## Getting started
+## 模板编写注意事项
+1.
+## 测试用例说明
+1. 代表性：代表并覆盖各种合理的、不合理的，合法的、不合法的，边界的、越界的输入数据；
+2. 可判定性：用例执行结果的正确性是可判定的；
+3. 紧急情况测试用例可暂缓，后续补上；
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+#### html
+1. 样式  
+布局样式在开发时即可判断调整，不作为重点。具体内容样式有注意点，例如单元格内容、图表label遮挡等，写测试用例时需考虑。
+2. JS  
+JS是测试重点，需要列举各种可能的数据结果。sql执行结果和freemarker方案具有一些确定性特点：  
+`1). 数组型结果中，每个对象的属性名是一致的；`  
+`2). 数组型结果的长度可能为0；`  
+因此测试用例可免去一些不合法情况。结合“测试用例说明”，现对测试用例做以下要求：  
+`· 用例中至少有一部分数据（数组型至少有一项，环比至少有一对）自己是知道正确结果的，例如sessions: 1052400，那我知道它应展示为1052.4K；`  
+`· test1.js：空值。所有单值为0、数组为空数组、对象为空对象；`  
+`· test2.js：掺零。对象的属性（包括数组中的对象）适当使用0，每个对象或每个数组中至少使用一次；`  
+`· test3.js：环比。用于计算环比的数据，一是部分除数设为0，二是要设计环比基准不存在的情况，例如当前周期数据中有company: "抖音"，而上周期company中没有"抖音"；`
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+#### freemarker
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.mesalab.cn/cyber-narrator/cn-reporter-template.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://git.mesalab.cn/cyber-narrator/cn-reporter-template/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.

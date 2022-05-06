@@ -1,0 +1,183 @@
+{
+  "isRepeat": 1,
+  "cronExpression":"0 0 17 * * ? *",
+  "startTime": "",
+  "endTime": "",
+  "timeConfig": {
+    "type": "yesterday",
+    "offset": 0,
+    "unit": ""
+  },
+  "dataset": [
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime}",
+      "type": "table",
+      "valueAlias": "trafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "xxxServiceTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "preXxxServiceTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "outOfXxxServiceTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "preOutOfXxxServiceTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ( 'IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "outOfXxxServiceRegionTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND client_region IN ( 'IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "preOutOfXxxServiceRegionTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "xxxServiceOfOutTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "preXxxServiceOfOutTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ('IDC') AND server_region IN ( 'IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "xxxServiceOfOutRegionTrafficTotal"
+    },
+    {
+      "querySql": "SELECT SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND client_region IN ('IDC') AND server_region IN ( 'IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动'))",
+      "type": "table",
+      "valueAlias": "preXxxServiceOfOutRegionTrafficTotal"
+    },
+    {
+      "querySql": "SELECT ROUND(QUANTILE(rate, 0.5), 4) AS rate50, ROUND(QUANTILE(rate, 0.9), 4) AS rate90, ROUND(QUANTILE(rate, 0.99), 4) AS rate99, ROUND(AVG(rate), 4) AS rate_avg, ROUND(max(rate), 4) AS rate_max, ROUND(min(rate), 4) AS rate_min FROM ( SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (bytes * 8) / 300 AS rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "xxxServiceRate"
+    },
+    {
+      "querySql": "SELECT ROUND(QUANTILE(rate, 0.5), 4) AS rate50, ROUND(QUANTILE(rate, 0.9), 4) AS rate90, ROUND(QUANTILE(rate, 0.99), 4) AS rate99, ROUND(AVG(rate), 4) AS rate_avg, ROUND(max(rate), 4) AS rate_max, ROUND(min(rate), 4) AS rate_min FROM ( SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (bytes * 8) / 300 AS rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "preXxxServiceRate"
+    },
+    {
+      "querySql": "SELECT TIME_FLOOR_WITH_FILL(UNIX_TIMESTAMP(common_recv_time),'PT5M','zero') AS stat_time, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, ROUND(bytes * 8/300) rate FROM session_record_cn WHERE common_recv_time >= toDateTime(${startTime}) AND common_recv_time < toDateTime(${endTime}) AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY stat_time ORDER BY stat_time ASC",
+      "type": "table",
+      "valueAlias": "xxxServiceTrafficChangingCurve"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(establish_latency,0.5), 4) AS establish_latency_p50, ROUND(QUANTILE(establish_latency,0.9), 4) AS establish_latency_p90, ROUND(QUANTILE(establish_latency,0.99), 4) AS establish_latency_p99, ROUND(AVG(establish_latency), 4) AS establish_latency_avg, ROUND(MAX(establish_latency), 4) AS establish_latency_max, ROUND(MIN(establish_latency), 4) AS establish_latency_min FROM ( SELECT SUM(common_c2s_pkt_num + common_s2c_pkt_num) AS bytes, ROUND(AVG(common_establish_latency_ms)) AS establish_latency, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "outOfXxxServiceTCP"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(establish_latency,0.5), 4) AS establish_latency_p50, ROUND(QUANTILE(establish_latency,0.9), 4) AS establish_latency_p90, ROUND(QUANTILE(establish_latency,0.99), 4) AS establish_latency_p99, ROUND(AVG(establish_latency), 4) AS establish_latency_avg, ROUND(MAX(establish_latency), 4) AS establish_latency_max, ROUND(MIN(establish_latency), 4) AS establish_latency_min FROM ( SELECT SUM(common_c2s_pkt_num + common_s2c_pkt_num) AS bytes, ROUND(AVG(common_establish_latency_ms)) AS establish_latency, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "preOutOfXxxServiceTCP"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(sequence_gap_loss_percent,0.5), 4) as sequence_gap_loss_p50, ROUND(QUANTILE(sequence_gap_loss_percent,0.9), 4) as sequence_gap_loss_p90, ROUND(QUANTILE(sequence_gap_loss_percent,0.99), 4) as sequence_gap_loss_p99, ROUND(AVG(sequence_gap_loss_percent), 4) as sequence_gap_loss_avg, ROUND(max(sequence_gap_loss_percent), 4) as sequence_gap_loss_max, ROUND(min(sequence_gap_loss_percent), 4) as sequence_gap_loss_min FROM ( SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, ROUND(SUM(common_c2s_tcp_lostlen + common_s2c_tcp_lostlen)/SUM(common_c2s_byte_num + common_s2c_byte_num + common_c2s_tcp_lostlen + common_s2c_tcp_lostlen),4) AS sequence_gap_loss_percent, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) as granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "outOfXxxServiceLoss"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(sequence_gap_loss_percent,0.5), 4) as sequence_gap_loss_p50, ROUND(QUANTILE(sequence_gap_loss_percent,0.9), 4) as sequence_gap_loss_p90, ROUND(QUANTILE(sequence_gap_loss_percent,0.99), 4) as sequence_gap_loss_p99, ROUND(AVG(sequence_gap_loss_percent), 4) as sequence_gap_loss_avg, ROUND(max(sequence_gap_loss_percent), 4) as sequence_gap_loss_max, ROUND(min(sequence_gap_loss_percent), 4) as sequence_gap_loss_min FROM ( SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, ROUND(SUM(common_c2s_tcp_lostlen + common_s2c_tcp_lostlen)/SUM(common_c2s_byte_num + common_s2c_byte_num + common_c2s_tcp_lostlen + common_s2c_tcp_lostlen),4) AS sequence_gap_loss_percent, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) as granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "preOutOfXxxServiceLoss"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(establish_latency,0.5), 4) AS establish_latency_p50, ROUND(QUANTILE(establish_latency,0.9), 4) AS establish_latency_p90, ROUND(QUANTILE(establish_latency,0.99), 4) AS establish_latency_p99, ROUND(AVG(establish_latency), 4) AS establish_latency_avg, ROUND(MAX(establish_latency), 4) AS establish_latency_max, ROUND(MIN(establish_latency), 4) AS establish_latency_min FROM ( SELECT SUM(common_c2s_pkt_num + common_s2c_pkt_num) AS bytes, ROUND(AVG(common_establish_latency_ms)) AS establish_latency, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "xxxServiceOfOutTCP"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(establish_latency,0.5), 4) AS establish_latency_p50, ROUND(QUANTILE(establish_latency,0.9), 4) AS establish_latency_p90, ROUND(QUANTILE(establish_latency,0.99), 4) AS establish_latency_p99, ROUND(AVG(establish_latency), 4) AS establish_latency_avg, ROUND(MAX(establish_latency), 4) AS establish_latency_max, ROUND(MIN(establish_latency), 4) AS establish_latency_min FROM ( SELECT SUM(common_c2s_pkt_num + common_s2c_pkt_num) AS bytes, ROUND(AVG(common_establish_latency_ms)) AS establish_latency, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "preXxxServiceOfOutTCP"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(sequence_gap_loss_percent,0.5), 4) as sequence_gap_loss_p50, ROUND(QUANTILE(sequence_gap_loss_percent,0.9), 4) as sequence_gap_loss_p90, ROUND(QUANTILE(sequence_gap_loss_percent,0.99), 4) as sequence_gap_loss_p99, ROUND(AVG(sequence_gap_loss_percent), 4) as sequence_gap_loss_avg, ROUND(max(sequence_gap_loss_percent), 4) as sequence_gap_loss_max, ROUND(min(sequence_gap_loss_percent), 4) as sequence_gap_loss_min FROM ( SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, ROUND(SUM(common_c2s_tcp_lostlen + common_s2c_tcp_lostlen)/SUM(common_c2s_byte_num + common_s2c_byte_num + common_c2s_tcp_lostlen + common_s2c_tcp_lostlen),4) AS sequence_gap_loss_percent, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) as granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "xxxServiceOfOutLoss"
+    },
+    {
+      "querySql": "SELECT SUM(bytes) AS all_bytes, ROUND(QUANTILE(sequence_gap_loss_percent,0.5), 4) as sequence_gap_loss_p50, ROUND(QUANTILE(sequence_gap_loss_percent,0.9), 4) as sequence_gap_loss_p90, ROUND(QUANTILE(sequence_gap_loss_percent,0.99), 4) as sequence_gap_loss_p99, ROUND(AVG(sequence_gap_loss_percent), 4) as sequence_gap_loss_avg, ROUND(max(sequence_gap_loss_percent), 4) as sequence_gap_loss_max, ROUND(min(sequence_gap_loss_percent), 4) as sequence_gap_loss_min FROM ( SELECT SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, ROUND(SUM(common_c2s_tcp_lostlen + common_s2c_tcp_lostlen)/SUM(common_c2s_byte_num + common_s2c_byte_num + common_c2s_tcp_lostlen + common_s2c_tcp_lostlen),4) AS sequence_gap_loss_percent, toDateTime(toStartOfInterval(toDateTime(common_recv_time),INTERVAL 300 SECOND)) as granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND common_l4_protocol IN ('IPv4_TCP', 'IPv6_TCP') AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY granularity)",
+      "type": "table",
+      "valueAlias": "preXxxServiceOfOutLoss"
+    },
+    {
+      "querySql": "SELECT client_province AS client_province, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT client_province AS client_province, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND server_region IN ('IDC') AND client_province in ( SELECT client_province AS client_province FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND notEmpty(client_province) AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY client_province ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, client_province) GROUP BY client_province ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "top10ProvinceOutOfXxxService"
+    },
+    {
+      "querySql": "SELECT client_province AS client_province, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT client_province AS client_province, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND server_region IN ('IDC') AND client_province in ( SELECT client_province AS client_province FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND notEmpty(client_province) AND client_region NOT IN ('IDC') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY client_province ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, client_province) GROUP BY client_province ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "preTop10ProvinceOutOfXxxService"
+    },
+    {
+      "querySql": "SELECT server_province AS server_province, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT server_province AS server_province, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND client_region IN ('IDC') AND server_province in ( SELECT server_province AS server_province FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND notEmpty(server_province) AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY server_province ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, server_province) GROUP BY server_province ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "top10ProvinceXxxServiceOfOut"
+    },
+    {
+      "querySql": "SELECT server_province AS server_province, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT server_province AS server_province, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND client_region IN ('IDC') AND server_province in ( SELECT server_province AS server_province FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND notEmpty(server_province) AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY server_province ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, server_province) GROUP BY server_province ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "preTop10ProvinceXxxServiceOfOut"
+    },
+    {
+      "querySql": "SELECT client_region AS client_region, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT client_region AS client_region, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND server_region IN ('IDC') AND client_region in ( SELECT client_region AS client_region FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ('IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY client_region ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, client_region) GROUP BY client_region ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "top10RegionOutOfXxxService"
+    },
+    {
+      "querySql": "SELECT client_region AS client_region, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT client_region AS client_region, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND server_region IN ('IDC') AND client_region in ( SELECT client_region AS client_region FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ('IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND server_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY client_region ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, client_region) GROUP BY client_region ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "preTop10OutOfXxxService"
+    },
+    {
+      "querySql": "SELECT server_region AS server_region, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT server_region AS server_region, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND client_region IN ('IDC') AND server_region in ( SELECT server_region AS server_region FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND server_region IN ('IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND client_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY server_region ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, server_region) GROUP BY server_region ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "top10RegionXxxServiceOfOut"
+    },
+    {
+      "querySql": "SELECT server_region AS server_region, SUM(egress_bytes) AS egress_bytes, SUM(ingress_bytes) AS ingress_bytes, SUM(bytes) AS bytes, ROUND(AVG(egress_rate), 4) AS egress_rate_avg, ROUND(MAX(egress_rate), 4) AS egress_rate_max, ROUND(MIN(egress_rate), 4) AS egress_rate_min, ROUND(AVG(ingress_rate), 4) AS ingress_rate_avg, ROUND(MAX(ingress_rate), 4) AS ingress_rate_max, ROUND(MIN(ingress_rate), 4) AS ingress_rate_min FROM ( SELECT server_region AS server_region, SUM(common_c2s_byte_num) AS egress_bytes, SUM(common_s2c_byte_num) AS ingress_bytes, SUM(common_c2s_byte_num + common_s2c_byte_num) AS bytes, (egress_bytes * 8) / (300) AS egress_rate, (ingress_bytes * 8) / (300) AS ingress_rate, toDateTime(toStartOfInterval(toDateTime(common_recv_time), INTERVAL 5 MINUTE)) AS granularity FROM session_record_cn WHERE common_recv_time >= ${startTime} - 86400 AND common_recv_time < ${endTime} - 86400 AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) AND client_region IN ('IDC') AND server_region in ( SELECT server_region AS server_region FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND server_region IN ('IPTV', 'VBAS测试', '阿克苏', '阿勒泰', '巴州', '博州', '昌吉', '哈密', '和田', '喀什', '克拉玛依', '克州', '奎屯', '区公司', '石河子', '塔城', '吐鲁番', '乌鲁木齐', '伊犁', '移动互联网', '移动网','预留') AND client_region IN ('IDC') AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY server_region ORDER BY SUM(common_c2s_byte_num + common_s2c_byte_num) DESC LIMIT 10 ) GROUP BY granularity, server_region) GROUP BY server_region ORDER BY bytes DESC LIMIT 10",
+      "type": "table",
+      "valueAlias": "preTop10RegionXxxServiceOfOut"
+    },
+    {
+      "querySql": "SELECT SUM(common_s2c_byte_num) AS received_bytes, server_idc_renter AS server_idc_renter FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY server_idc_renter ORDER BY received_bytes DESC LIMIT 1",
+      "type": "table",
+      "valueAlias": "xxxServiceTrafficBytes"
+    },
+    {
+      "querySql": "SELECT SUM(common_s2c_byte_num) AS received_bytes, client_idc_renter AS client_idc_renter FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND client_idc_renter IN ('字节跳动') GROUP BY client_idc_renter ORDER BY received_bytes DESC LIMIT 1",
+      "type": "table",
+      "valueAlias": "xxxServiceMissCacheBytes"
+    },
+    {
+      "querySql": "SELECT SUM(common_sessions) AS sessions, server_idc_renter AS server_idc_renter FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND (client_idc_renter IN ('字节跳动') OR server_idc_renter IN ('字节跳动')) GROUP BY server_idc_renter ORDER BY sessions DESC LIMIT 1",
+      "type": "table",
+      "valueAlias": "xxxServiceTotalSessions"
+    },
+    {
+      "querySql": "SELECT SUM(common_sessions) AS sessions, client_idc_renter AS client_idc_renter FROM session_record_cn WHERE common_recv_time >= ${startTime} AND common_recv_time < ${endTime} AND client_region IN ('IDC') AND server_region NOT IN ('IDC') AND client_idc_renter IN ('字节跳动') GROUP BY client_idc_renter ORDER BY sessions DESC LIMIT 1",
+      "type": "table",
+      "valueAlias": "xxxServiceMissCacheSessions"
+    }
+  ]
+}
